@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrien Mathias — Portfolio QLIO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F2137;--navy-mid:#1A3A5C;
+  --blue:#2563EB;--blue-light:#3B82F6;
+  --accent:#E8C547;
+  --radius:10px;--radius-lg:16px;
+  --bg-main:#FFFFFF;--bg-section:#F7F9FC;
+  --t-main:#0F172A;--t-sec:#64748B;--t-hint:#94A3B8;
+  --border:#E2E8F0;
+}
+[data-theme="dark"]{
+  --bg-main:#0D1117;--bg-section:#161B22;
+  --t-main:#E6EDF3;--t-sec:#8B949E;--t-hint:#484F58;
+  --border:#21262D;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:14px}
+body{font-family:'Sora',sans-serif;color:var(--t-main);background:var(--bg-main);overflow-x:hidden;cursor:none;transition:background .3s,color .3s}
+
+/* CURSEUR */
+#cursor{position:fixed;width:9px;height:9px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:30px;height:30px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.45;transition:width .2s,height .2s}
+
+/* PROGRESS */
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:9997;width:0%;border-radius:0 2px 2px 0}
+
+/* DOT NAV */
+#dot-nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:90;display:flex;flex-direction:column;gap:9px}
+.dot-nav-item{display:flex;align-items:center;gap:7px;cursor:pointer;justify-content:flex-end;text-decoration:none}
+.dot-label{font-size:9px;color:var(--t-hint);letter-spacing:.08em;text-transform:uppercase;opacity:0;transform:translateX(4px);transition:opacity .2s,transform .2s;white-space:nowrap;font-family:'Sora',sans-serif}
+.dot-nav-item:hover .dot-label,.dot-nav-item.active .dot-label{opacity:1;transform:none}
+.dot-nav-dot{width:6px;height:6px;border-radius:50%;border:1.5px solid var(--t-hint);transition:background .2s,border-color .2s,transform .2s;flex-shrink:0}
+.dot-nav-item.active .dot-nav-dot{background:var(--accent);border-color:var(--accent);transform:scale(1.3)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(15,33,55,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 36px;display:flex;align-items:center;justify-content:space-between;height:58px}
+.nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-logo{width:30px;height:30px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);font-family:'DM Serif Display',serif}
+.nav-name{font-size:14px;font-weight:500;color:#fff}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:10px;color:rgba(255,255,255,.45);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.theme-toggle{width:32px;height:32px;border-radius:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.theme-toggle svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
+.nav-cta{font-size:11px;padding:7px 18px;border-radius:5px;background:transparent;color:var(--accent);border:1px solid var(--accent);cursor:pointer;letter-spacing:.06em;text-transform:uppercase;font-weight:600;font-family:'Sora',sans-serif;transition:background .2s,color .2s;text-decoration:none}
+.nav-cta:hover{background:var(--accent);color:var(--navy)}
+
+/* HERO */
+#accueil{background:var(--navy);padding:72px 36px 56px;position:relative;overflow:hidden}
+[data-theme="dark"] #accueil{background:#060A0F}
+.hbg{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.14) 0%,transparent 70%);pointer-events:none}
+.hbg1{width:500px;height:500px;top:-120px;right:-80px}
+.hbg2{width:250px;height:250px;bottom:-60px;left:160px;opacity:.5}
+.hero-grid{display:grid;grid-template-columns:1fr 380px;gap:52px;align-items:center;max-width:1100px;margin:0 auto;position:relative;z-index:1}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(232,197,71,.12);border:1px solid rgba(232,197,71,.3);border-radius:20px;padding:4px 14px;font-size:10px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:20px}
+.eydot{width:5px;height:5px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+.hero-title{font-family:'DM Serif Display',serif;font-size:44px;line-height:1.08;color:#fff;margin-bottom:16px;letter-spacing:-.02em}
+.hero-title em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.5);line-height:1.8;max-width:480px;margin-bottom:8px;font-weight:300}
+.typing-line{font-size:13px;color:rgba(255,255,255,.38);margin-bottom:28px;font-weight:300;min-height:20px;display:flex;align-items:center;gap:7px}
+.typing-word{color:var(--accent);font-weight:500}
+.typing-cursor{display:inline-block;width:2px;height:14px;background:var(--accent);animation:blink .7s infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-btns{display:flex;gap:12px;margin-bottom:44px}
+.btn-p{padding:11px 24px;border-radius:5px;background:var(--accent);color:var(--navy);border:none;font-size:12px;cursor:pointer;font-weight:700;font-family:'Sora',sans-serif;transition:transform .15s,box-shadow .15s;text-decoration:none;display:inline-block}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(232,197,71,.3)}
+.btn-s{padding:11px 24px;border-radius:5px;background:transparent;color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.2);font-size:12px;cursor:pointer;font-family:'Sora',sans-serif;transition:border-color .2s,color .2s;text-decoration:none;display:inline-block}
+.btn-s:hover{border-color:rgba(255,255,255,.5);color:#fff}
+.hero-kpis{display:flex;border-top:1px solid rgba(255,255,255,.1);padding-top:28px}
+.kpi{flex:1}.kpi+.kpi{border-left:1px solid rgba(255,255,255,.1);padding-left:24px}
+.kpi-num{font-family:'DM Serif Display',serif;font-size:34px;color:#fff;line-height:1}
+.kpi-num sup{font-size:16px;color:var(--accent);font-family:'Sora',sans-serif}
+.kpi-label{font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin-top:5px;font-weight:500}
+/* HERO RIGHT */
+.hero-right{display:flex;flex-direction:column;gap:12px}
+.profile-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius-lg);padding:18px;display:flex;align-items:center;gap:14px}
+.profile-avatar{width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--navy);flex-shrink:0;border:2px solid rgba(232,197,71,.4);font-family:'DM Serif Display',serif}
+.profile-name{font-size:13px;font-weight:600;color:#fff}
+.profile-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px;font-weight:300}
+.profile-tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.ptag{font-size:9px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1)}
+.skill-grid-hero{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.skill-card-hero{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:13px}
+.skill-bar-track{height:2px;background:rgba(255,255,255,.08);border-radius:2px;margin-bottom:8px}
+.skill-bar-fill{height:2px;border-radius:2px;background:var(--accent)}
+.skill-card-name{font-size:11px;font-weight:500;color:rgba(255,255,255,.65)}
+.skill-card-sub{font-size:9px;color:rgba(255,255,255,.28);margin-top:2px;font-weight:300}
+.avail-card{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.avail-dot{width:7px;height:7px;border-radius:50%;background:#22C55E;flex-shrink:0;animation:pulse 2s infinite}
+.avail-text{font-size:11px;color:rgba(255,255,255,.55);line-height:1.5;font-weight:300}
+.avail-text strong{color:#22C55E;font-weight:600}
+
+/* SECTIONS communes */
+.section{padding:72px 36px;border-bottom:1px solid var(--border)}
+.section-alt{background:var(--bg-section)}
+.container{max-width:1100px;margin:0 auto}
+.sey{font-size:10px;font-weight:600;color:var(--blue);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px}
+.stitle{font-family:'DM Serif Display',serif;font-size:30px;color:var(--t-main);line-height:1.2;letter-spacing:-.02em}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.about-text{font-size:13px;color:var(--t-sec);line-height:1.9;margin-top:20px;font-weight:300}
+.about-text+.about-text{margin-top:14px}
+.about-facts{margin-top:26px;display:flex;flex-direction:column;gap:11px}
+.fact-item{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;background:var(--bg-section);border-radius:var(--radius);border:1px solid var(--border)}
+.fact-icon{width:26px;height:26px;border-radius:6px;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+[data-theme="dark"] .fact-icon{background:var(--navy-mid)}
+.fact-icon svg{width:12px;height:12px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+.fact-label{font-size:10px;font-weight:600;color:var(--t-main);text-transform:uppercase;letter-spacing:.08em}
+.fact-value{font-size:12px;color:var(--t-sec);margin-top:2px;font-weight:300;line-height:1.5}
+.skills-col-title{font-size:10px;font-weight:600;color:var(--blue);letter-spacing:.15em;text-transform:uppercase;margin-bottom:20px}
+.skill-row{margin-bottom:17px}
+.skill-header{display:flex;justify-content:space-between;margin-bottom:6px}
+.skill-name{font-size:12px;font-weight:500;color:var(--t-main)}
+.skill-pct{font-size:11px;font-weight:600;color:var(--navy)}
+[data-theme="dark"] .skill-pct{color:var(--accent)}
+.skill-track{height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+.skill-fill{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--navy),var(--blue-light));width:0;transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+
+/* SOFT SKILLS */
+.soft-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:36px;align-items:start}
+.soft-col-title{font-size:10px;font-weight:600;color:var(--blue);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
+.lang-list{display:flex;flex-direction:column;gap:10px}
+.lang-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg-main);border-radius:var(--radius);border:1px solid var(--border)}
+.lang-flag{font-size:18px;width:26px;text-align:center}
+.lang-info{flex:1}
+.lang-name{font-size:12px;font-weight:500;color:var(--t-main)}
+.lang-level{font-size:10px;color:var(--t-hint);margin-top:1px;font-weight:300}
+.lang-badge{font-size:9px;padding:2px 9px;border-radius:20px;font-weight:600;letter-spacing:.04em}
+.badge-natif{background:#DCFCE7;color:#15803D}
+.badge-pro{background:#DBEAFE;color:#1D4ED8}
+.badge-notions{background:#F1F5F9;color:#64748B}
+[data-theme="dark"] .badge-natif{background:#14532d;color:#86EFAC}
+[data-theme="dark"] .badge-pro{background:#1e3a5f;color:#93C5FD}
+[data-theme="dark"] .badge-notions{background:#21262D;color:#8B949E}
+.soft-tags{display:flex;flex-wrap:wrap;gap:8px}
+.soft-tag{display:flex;align-items:center;gap:7px;padding:8px 13px;background:var(--bg-main);border-radius:var(--radius);border:1px solid var(--border);font-size:11px;font-weight:500;color:var(--t-main)}
+.soft-tag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+
+/* OUTILS */
+.tools-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:11px;margin-top:36px}
+.tool-chip{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 10px;background:var(--bg-section);border-radius:var(--radius);border:1px solid var(--border);transition:border-color .2s,transform .2s;cursor:default}
+.tool-chip:hover{border-color:var(--navy);transform:translateY(-2px)}
+[data-theme="dark"] .tool-chip:hover{border-color:var(--accent)}
+.tool-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.tool-icon svg{width:18px;height:18px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tool-name{font-size:10px;font-weight:600;color:var(--t-main);text-align:center}
+.tool-type{font-size:9px;color:var(--t-hint);text-align:center;margin-top:1px}
+
+/* PROJETS */
+.sec-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px}
+.see-all{font-size:11px;color:var(--blue);text-decoration:none;font-weight:500}
+.filters{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap}
+.filter-btn{font-size:10px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg-main);color:var(--t-sec);cursor:pointer;font-family:'Sora',sans-serif;font-weight:500;transition:all .2s}
+.filter-btn.active,.filter-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+[data-theme="dark"] .filter-btn.active,[data-theme="dark"] .filter-btn:hover{background:var(--accent);color:var(--navy);border-color:var(--accent)}
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.project-card{background:var(--bg-main);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;display:block}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(15,33,55,.1);border-color:#94A3B8}
+.project-card.hidden{display:none}
+.project-cover{height:88px;padding:14px;display:flex;flex-direction:column;justify-content:space-between}
+.cover-q{background:linear-gradient(135deg,#EFF6FF,#DBEAFE)}
+.cover-l{background:linear-gradient(135deg,#F0FDF4,#DCFCE7)}
+.cover-o{background:linear-gradient(135deg,#FAF5FF,#EDE9FE)}
+.cover-s{background:linear-gradient(135deg,#FFFBEB,#FEF3C7)}
+.cover-m{background:linear-gradient(135deg,#FFF7ED,#FFEDD5)}
+.cover-g{background:linear-gradient(135deg,#F0FDFA,#CCFBF1)}
+[data-theme="dark"] .cover-q{background:linear-gradient(135deg,#1e3a5f,#1d3461)}
+[data-theme="dark"] .cover-l{background:linear-gradient(135deg,#14532d,#166534)}
+[data-theme="dark"] .cover-o{background:linear-gradient(135deg,#3b0764,#4a044e)}
+[data-theme="dark"] .cover-s{background:linear-gradient(135deg,#451a03,#78350f)}
+[data-theme="dark"] .cover-m{background:linear-gradient(135deg,#431407,#7c2d12)}
+[data-theme="dark"] .cover-g{background:linear-gradient(135deg,#042f2e,#134e4a)}
+.project-num{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.6}
+.num-q{color:#1D4ED8}.num-l{color:#15803D}.num-o{color:#7E22CE}.num-s{color:#B45309}.num-m{color:#C2410C}.num-g{color:#0F766E}
+[data-theme="dark"] .num-q{color:#93C5FD}[data-theme="dark"] .num-l{color:#86EFAC}
+[data-theme="dark"] .num-o{color:#D8B4FE}[data-theme="dark"] .num-s{color:#FCD34D}
+[data-theme="dark"] .num-m{color:#FDBA74}[data-theme="dark"] .num-g{color:#5EEAD4}
+.project-badge{font-size:9px;font-weight:600;padding:3px 9px;border-radius:20px;width:fit-content}
+.badge-q{background:#DBEAFE;color:#1D4ED8}.badge-l{background:#DCFCE7;color:#15803D}
+.badge-o{background:#EDE9FE;color:#7E22CE}.badge-s{background:#FEF3C7;color:#B45309}
+.badge-m{background:#FFEDD5;color:#C2410C}.badge-g{background:#CCFBF1;color:#0F766E}
+.project-body{padding:14px 16px 16px}
+.project-title{font-size:13px;font-weight:600;color:var(--t-main);margin-bottom:5px;line-height:1.4}
+.project-desc{font-size:11px;color:var(--t-sec);line-height:1.7;margin-bottom:12px;font-weight:300}
+.project-footer{display:flex;justify-content:space-between;align-items:center;padding-top:11px;border-top:1px solid var(--border)}
+.project-meta{font-size:10px;color:var(--t-hint);font-weight:500}
+.project-arrow{font-size:14px;color:var(--t-hint);transition:color .2s,transform .2s}
+.project-card:hover .project-arrow{color:var(--blue);transform:translate(2px,-2px)}
+
+/* MODAL */
+.modal-backdrop{position:fixed;inset:0;background:rgba(7,17,30,.8);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(5px)}
+.modal-backdrop.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg-main);border-radius:18px;max-width:620px;width:100%;max-height:88vh;overflow-y:auto;position:relative;transform:scale(.96) translateY(10px);transition:transform .28s cubic-bezier(.22,1,.36,1)}
+.modal-backdrop.open .modal{transform:none}
+.modal-cover{height:120px;border-radius:18px 18px 0 0;display:flex;flex-direction:column;justify-content:space-between;padding:20px}
+.modal-close{position:absolute;top:13px;right:13px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.25);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;z-index:10}
+.modal-close:hover{background:rgba(0,0,0,.5)}
+.modal-body{padding:22px 26px 26px}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--t-main);margin-bottom:6px;line-height:1.25}
+.modal-meta{font-size:11px;color:var(--t-hint);margin-bottom:16px}
+.modal-section-label{font-size:9px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;margin-top:16px}
+.modal-text{font-size:13px;color:var(--t-sec);line-height:1.85;font-weight:300}
+.modal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.modal-tag{font-size:10px;padding:3px 10px;border-radius:20px;background:var(--bg-section);color:var(--t-sec);border:1px solid var(--border);font-weight:500}
+.modal-result{display:flex;gap:10px;padding:11px 13px;background:var(--bg-section);border-radius:var(--radius);border:1px solid var(--border);margin-top:8px;align-items:flex-start}
+.modal-result-icon{width:24px;height:24px;border-radius:5px;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+[data-theme="dark"] .modal-result-icon{background:var(--navy-mid)}
+.modal-result-icon svg{width:12px;height:12px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+.modal-result-text{font-size:12px;color:var(--t-sec);font-weight:300;line-height:1.6}
+.modal-result-text strong{color:var(--t-main);font-weight:600}
+
+/* COMPETENCES */
+.comp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px}
+.comp-card{padding:22px 18px;border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--bg-section);transition:border-color .2s,transform .2s}
+.comp-card:hover{border-color:var(--navy);transform:translateY(-2px)}
+[data-theme="dark"] .comp-card:hover{border-color:var(--accent)}
+.comp-icon{width:36px;height:36px;border-radius:9px;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:13px}
+[data-theme="dark"] .comp-icon{background:var(--navy-mid)}
+.comp-icon svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.comp-title{font-size:13px;font-weight:600;color:var(--t-main);margin-bottom:7px}
+.comp-items{display:flex;flex-direction:column;gap:5px}
+.comp-item{font-size:11px;color:var(--t-sec);font-weight:300;display:flex;align-items:center;gap:6px}
+.comp-item::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* CV */
+#cv{padding:72px 36px;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+[data-theme="dark"] #cv{background:#060A0F}
+.cv-bg{position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.14) 0%,transparent 70%);pointer-events:none}
+.cv-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start;position:relative;z-index:1;max-width:1100px;margin:0 auto}
+.cv-stitle{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;margin-bottom:6px}
+.cv-sub{font-size:13px;color:rgba(255,255,255,.35);font-weight:300;margin-bottom:28px}
+.timeline-item{display:flex;gap:16px;padding-bottom:22px;position:relative}
+.timeline-item:not(:last-child)::after{content:'';position:absolute;left:13px;top:26px;bottom:0;width:1px;background:rgba(255,255,255,.1)}
+.tl-dot{width:26px;height:26px;border-radius:50%;background:rgba(232,197,71,.15);border:1px solid rgba(232,197,71,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.tl-dot-inner{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.tl-date{font-size:10px;color:var(--accent);font-weight:600;letter-spacing:.08em;margin-bottom:3px;text-transform:uppercase}
+.tl-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px}
+.tl-sub{font-size:11px;color:rgba(255,255,255,.35);font-weight:300;line-height:1.5}
+.cv-dl{margin-top:28px;display:inline-flex;align-items:center;gap:9px;padding:12px 24px;border-radius:7px;background:var(--accent);color:var(--navy);text-decoration:none;font-weight:700;font-size:12px;letter-spacing:.04em;transition:transform .15s,box-shadow .15s}
+.cv-dl:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(232,197,71,.3)}
+.cv-dl svg{width:14px;height:14px;stroke:var(--navy);fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* CTA BAND */
+.cta-band{background:var(--accent);padding:44px 36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.cta-band h2{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy);line-height:1.25}
+.cta-band p{font-size:13px;color:rgba(15,33,55,.65);margin-top:6px;max-width:400px;font-weight:300}
+.cta-btns{display:flex;gap:10px;flex-shrink:0}
+.btn-navy{padding:11px 22px;border-radius:5px;background:var(--navy);color:#fff;border:none;font-size:12px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:transform .15s;text-decoration:none;display:inline-block}
+.btn-navy:hover{transform:translateY(-1px)}
+.btn-navy-o{padding:11px 22px;border-radius:5px;background:transparent;color:var(--navy);border:2px solid var(--navy);font-size:12px;font-weight:700;font-family:'Sora',sans-serif;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block}
+.btn-navy-o:hover{background:rgba(15,33,55,.08)}
+
+/* CONTACT */
+#contact{padding:72px 36px;background:var(--bg-main)}
+.contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;max-width:1100px;margin:0 auto}
+.contact-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--t-main);line-height:1.2;margin-bottom:12px}
+.contact-sub{font-size:13px;color:var(--t-sec);line-height:1.8;font-weight:300;margin-bottom:26px}
+.contact-items{display:flex;flex-direction:column;gap:13px}
+.contact-item{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--bg-section);border-radius:var(--radius);border:1px solid var(--border);text-decoration:none;color:var(--t-main);transition:border-color .2s;position:relative}
+.contact-item:hover{border-color:var(--navy)}
+[data-theme="dark"] .contact-item:hover{border-color:var(--accent)}
+.ci-icon{width:30px;height:30px;border-radius:7px;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+[data-theme="dark"] .ci-icon{background:var(--navy-mid)}
+.ci-icon svg{width:13px;height:13px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+.ci-label{font-size:10px;color:var(--t-hint);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.ci-value{font-size:12px;color:var(--t-main);font-weight:500;margin-top:1px}
+.copy-btn{position:absolute;right:13px;top:50%;transform:translateY(-50%);background:var(--bg-section);border:1px solid var(--border);border-radius:5px;padding:4px 10px;font-size:9px;font-weight:600;color:var(--t-sec);cursor:pointer;font-family:'Sora',sans-serif;letter-spacing:.06em;text-transform:uppercase;transition:all .2s}
+.copy-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.copy-btn.copied{background:#22C55E;color:#fff;border-color:#22C55E}
+.contact-form{display:flex;flex-direction:column;gap:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-label{font-size:10px;font-weight:600;color:var(--t-main);text-transform:uppercase;letter-spacing:.08em}
+.form-input,.form-textarea{padding:10px 12px;border-radius:7px;border:1px solid var(--border);background:var(--bg-section);font-size:12px;color:var(--t-main);font-family:'Sora',sans-serif;font-weight:300;transition:border-color .2s;outline:none}
+.form-input:focus,.form-textarea:focus{border-color:var(--navy)}
+[data-theme="dark"] .form-input:focus,[data-theme="dark"] .form-textarea:focus{border-color:var(--accent)}
+.form-textarea{height:110px;resize:vertical}
+.form-submit{padding:11px;border-radius:7px;background:var(--navy);color:#fff;border:none;font-size:12px;font-weight:600;font-family:'Sora',sans-serif;cursor:pointer;transition:background .2s,transform .15s}
+.form-submit:hover{background:var(--navy-mid);transform:translateY(-1px)}
+
+/* FOOTER */
+footer{background:#07111E;padding:18px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-left{font-size:11px;color:rgba(255,255,255,.22)}
+.footer-links{display:flex;gap:22px}
+.footer-links a{font-size:10px;color:rgba(255,255,255,.28);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;font-weight:500;transition:color .2s}
+.footer-links a:hover{color:var(--accent)}
+
+/* BACK TO TOP */
+#btt{position:fixed;bottom:24px;right:20px;width:40px;height:40px;border-radius:50%;background:var(--navy);border:1px solid rgba(255,255,255,.15);cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;z-index:90}
+#btt.visible{opacity:1;transform:none}
+#btt svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  #dot-nav{display:none}
+  .nav-links{display:none}
+  nav{padding:0 18px}
+  #accueil{padding:56px 18px 44px}
+  .hero-grid{grid-template-columns:1fr;gap:32px}
+  .hero-right{display:none}
+  .hero-title{font-size:32px}
+  .section{padding:52px 18px}
+  #cv{padding:52px 18px}
+  #contact{padding:52px 18px}
+  .cta-band{padding:32px 18px}
+  footer{padding:16px 18px}
+  .about-grid,.cv-grid,.contact-inner,.soft-grid{grid-template-columns:1fr;gap:36px}
+  .projects-grid{grid-template-columns:1fr 1fr}
+  .comp-grid{grid-template-columns:1fr 1fr}
+  .tools-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:560px){
+  .projects-grid,.comp-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-title{font-size:28px}
+}
+
+@media print{
+  *{color:#000!important;background:#fff!important;box-shadow:none!important}
+  #progress-bar,#btt,#dot-nav,nav,.modal-backdrop,
+  .hero-right,.hero-btns,.cta-band,.filters,.theme-toggle,.nav-cta,.copy-btn,.form-submit,#cursor,#cursor-ring{display:none!important}
+  body{cursor:auto;font-size:10pt}
+  #accueil{padding:24px 18px!important}
+  .hero-title{font-size:24pt;color:#0F2137!important}
+  .hero-sub,.typing-line{color:#444!important}
+  .hero-grid{grid-template-columns:1fr!important}
+  .section{padding:20px 18px!important}
+  .projects-grid,.comp-grid{grid-template-columns:1fr 1fr!important;gap:10px}
+  .about-grid,.cv-grid,.contact-inner{grid-template-columns:1fr 1fr;gap:20px}
+  .tools-grid{grid-template-columns:repeat(4,1fr)}
+  .project-card{border:1px solid #ddd;break-inside:avoid}
+  footer{padding:10px 18px}
+  #cv{padding:20px 18px!important}
+  .cv-stitle{color:#0F2137!important}
+  .tl-date{color:#2563EB!important}
+  .tl-title,.tl-sub{color:#333!important}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="progress-bar"></div>
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut">
+  <svg viewBox="0 0 16 16"><path d="M8 12V4M4 8l4-4 4 4"/></svg>
+</button>
+
+<!-- DOT NAV -->
+<nav id="dot-nav">
+  <a class="dot-nav-item active" href="#accueil" data-section="accueil"><span class="dot-label">Accueil</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#apropos" data-section="apropos"><span class="dot-label">À propos</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#softskills" data-section="softskills"><span class="dot-label">Soft skills</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#outils" data-section="outils"><span class="dot-label">Outils</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#projets" data-section="projets"><span class="dot-label">Projets</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#competences" data-section="competences"><span class="dot-label">Compétences</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#cv" data-section="cv"><span class="dot-label">Parcours</span><span class="dot-nav-dot"></span></a>
+  <a class="dot-nav-item" href="#contact" data-section="contact"><span class="dot-label">Contact</span><span class="dot-nav-dot"></span></a>
+</nav>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#accueil" class="nav-brand">
+    <div class="nav-logo">AM</div>
+    <span class="nav-name">Adrien Mathias</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#accueil" class="active">Accueil</a></li>
+    <li><a href="#apropos">À propos</a></li>
+    <li><a href="#outils">Outils</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#competences">Compétences</a></li>
+    <li><a href="#cv">Parcours</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="theme-btn">
+      <svg id="theme-icon" viewBox="0 0 16 16"><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"/><circle cx="8" cy="8" r="3"/></svg>
+    </button>
+    <a href="#contact" class="nav-cta">Me contacter</a>
+  </div>
+</nav>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModalDirect()">×</button>
+    <div class="modal-cover" id="modal-cover">
+      <span class="project-num" id="modal-num"></span>
+      <span class="project-badge" id="modal-badge"></span>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-title" id="modal-title"></h2>
+      <div class="modal-meta" id="modal-meta"></div>
+      <div class="modal-section-label">Contexte & objectifs</div>
+      <p class="modal-text" id="modal-context"></p>
+      <div class="modal-section-label">Outils & méthodes</div>
+      <div class="modal-tags" id="modal-tools"></div>
+      <div class="modal-section-label">Résultats & apports</div>
+      <div id="modal-results"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="accueil">
+  <div class="hbg hbg1"></div>
+  <div class="hbg hbg2"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow reveal"><div class="eydot"></div>Disponible · Alternance Master 2025–2026</div>
+      <h1 class="hero-title reveal d1">Des processus rigoureux.<br>Des résultats <em>mesurables.</em></h1>
+      <p class="hero-sub reveal d2">Étudiant en 3ᵉ année de BUT QLIO à l'UPHF. Technicien qualité en alternance.</p>
+      <div class="typing-line reveal d2">Spécialiste en&nbsp;<span class="typing-word" id="typing-word"></span><span class="typing-cursor"></span></div>
+      <div class="hero-btns reveal d3">
+        <a href="#projets" class="btn-p">Voir mes projets</a>
+        <a href="#cv" class="btn-s">Télécharger le CV</a>
+      </div>
+      <div class="hero-kpis reveal d4">
+        <div class="kpi"><div class="kpi-num"><span class="counter" data-target="3">0</span><sup> ans</sup></div><div class="kpi-label">de formation</div></div>
+        <div class="kpi"><div class="kpi-num"><span class="counter" data-target="6">0</span><sup>+</sup></div><div class="kpi-label">projets</div></div>
+        <div class="kpi"><div class="kpi-num"><span class="counter" data-target="4">0</span></div><div class="kpi-label">domaines</div></div>
+        <div class="kpi"><div class="kpi-num"><span class="counter" data-target="2">0</span><sup> ans</sup></div><div class="kpi-label">alternance</div></div>
+      </div>
+    </div>
+    <div class="hero-right reveal d2">
+      <div class="profile-card">
+        <div class="profile-avatar">AM</div>
+        <div>
+          <div class="profile-name">Adrien Mathias</div>
+          <div class="profile-sub">Technicien qualité · UPHF Valenciennes</div>
+          <div class="profile-tags"><span class="ptag">BUT QLIO</span><span class="ptag">BTS CPRP</span><span class="ptag">SolidWorks</span></div>
+        </div>
+      </div>
+      <div class="skill-grid-hero">
+        <div class="skill-card-hero"><div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div><div class="skill-card-name">Qualité</div><div class="skill-card-sub">5S · conformité</div></div>
+        <div class="skill-card-hero"><div class="skill-bar-track"><div class="skill-bar-fill" style="width:75%;background:#3B82F6"></div></div><div class="skill-card-name">Logistique</div><div class="skill-card-sub">VSM · flux</div></div>
+        <div class="skill-card-hero"><div class="skill-bar-track"><div class="skill-bar-fill" style="width:70%;background:#8B5CF6"></div></div><div class="skill-card-name">Organisation</div><div class="skill-card-sub">PDCA</div></div>
+        <div class="skill-card-hero"><div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%;background:#F59E0B"></div></div><div class="skill-card-name">QSE</div><div class="skill-card-sub">Sécurité</div></div>
+      </div>
+      <div class="avail-card"><div class="avail-dot"></div><div class="avail-text"><strong>Disponible</strong> — Master Qualité · 2025</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="apropos" class="section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="sey">À propos</div>
+        <h2 class="stitle">Ingénieur de demain,<br>technicien d'aujourd'hui</h2>
+        <p class="about-text">Passionné par l'optimisation des processus industriels, je combine une formation académique solide en BUT QLIO avec une expérience terrain en alternance. Mon approche est méthodique, orientée résultats.</p>
+        <p class="about-text">Grâce à mon BTS CPRP, je maîtrise la lecture de plans et l'utilisation de SolidWorks. J'assure la conformité de la production, mets en place le 5S et participe à des projets d'amélioration continue.</p>
+        <div class="about-facts">
+          <div class="fact-item"><div class="fact-icon"><svg viewBox="0 0 14 14"><path d="M7 1v6M4 10h6"/></svg></div><div><div class="fact-label">Formation</div><div class="fact-value">3ᵉ année BUT QLIO — UPHF Valenciennes</div></div></div>
+          <div class="fact-item"><div class="fact-icon"><svg viewBox="0 0 14 14"><path d="M2 7h10M7 2l5 5-5 5"/></svg></div><div><div class="fact-label">Alternance</div><div class="fact-value">Technicien qualité — 5S, conformité, amélioration continue</div></div></div>
+          <div class="fact-item"><div class="fact-icon"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5"/><path d="M7 4v3l2 2"/></svg></div><div><div class="fact-label">Objectif</div><div class="fact-value">Master Qualité ou Management Industriel — QHSE</div></div></div>
+        </div>
+      </div>
+      <div class="reveal d1">
+        <div class="skills-col-title">Niveau de maîtrise</div>
+        <div class="skill-row"><div class="skill-header"><span class="skill-name">Qualité & conformité</span><span class="skill-pct">85%</span></div><div class="skill-track"><div class="skill-fill" data-width="85"></div></div></div>
+        <div class="skill-row"><div class="skill-header"><span class="skill-name">Logistique industrielle</span><span class="skill-pct">75%</span></div><div class="skill-track"><div class="skill-fill" data-width="75" style="background:linear-gradient(90deg,#1D4ED8,#60A5FA)"></div></div></div>
+        <div class="skill-row"><div class="skill-header"><span class="skill-name">Organisation & PDCA</span><span class="skill-pct">70%</span></div><div class="skill-track"><div class="skill-fill" data-width="70" style="background:linear-gradient(90deg,#6D28D9,#A78BFA)"></div></div></div>
+        <div class="skill-row"><div class="skill-header"><span class="skill-name">QSE & réglementation</span><span class="skill-pct">65%</span></div><div class="skill-track"><div class="skill-fill" data-width="65" style="background:linear-gradient(90deg,#B45309,#FCD34D)"></div></div></div>
+        <div class="skill-row"><div class="skill-header"><span class="skill-name">SolidWorks & plans</span><span class="skill-pct">60%</span></div><div class="skill-track"><div class="skill-fill" data-width="60" style="background:linear-gradient(90deg,#065F46,#34D399)"></div></div></div>
+        <div class="skill-row"><div class="skill-header"><span class="skill-name">Amélioration continue</span><span class="skill-pct">80%</span></div><div class="skill-track"><div class="skill-fill" data-width="80" style="background:linear-gradient(90deg,#9D174D,#F472B6)"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOFT SKILLS -->
+<section id="softskills" class="section section-alt">
+  <div class="container">
+    <div class="reveal"><div class="sey">Profil humain</div><h2 class="stitle">Langues & soft skills</h2></div>
+    <div class="soft-grid">
+      <div class="reveal d1">
+        <div class="soft-col-title">Langues</div>
+        <div class="lang-list">
+          <div class="lang-item"><div class="lang-flag">🇫🇷</div><div class="lang-info"><div class="lang-name">Français</div><div class="lang-level">Langue maternelle</div></div><span class="lang-badge badge-natif">Natif</span></div>
+          <div class="lang-item"><div class="lang-flag">🇬🇧</div><div class="lang-info"><div class="lang-name">Anglais</div><div class="lang-level">Lecture de normes, communication pro</div></div><span class="lang-badge badge-pro">Technique</span></div>
+          <div class="lang-item"><div class="lang-flag">🇪🇸</div><div class="lang-info"><div class="lang-name">Espagnol</div><div class="lang-level">Bases scolaires</div></div><span class="lang-badge badge-notions">Notions</span></div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="soft-col-title">Savoir-être</div>
+        <div class="soft-tags">
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#2563EB"></div>Rigueur & précision</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#22C55E"></div>Esprit d'équipe</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#E8C547"></div>Force de proposition</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#8B5CF6"></div>Adaptabilité</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#F59E0B"></div>Sens de l'organisation</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#EC4899"></div>Communication claire</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#0F766E"></div>Curiosité technique</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#C2410C"></div>Autonomie</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#1D4ED8"></div>Gestion des priorités</div>
+          <div class="soft-tag"><div class="soft-tag-dot" style="background:#15803D"></div>Fiabilité</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTILS -->
+<section id="outils" class="section">
+  <div class="container">
+    <div class="reveal"><div class="sey">Boîte à outils</div><h2 class="stitle">Outils & méthodes</h2></div>
+    <div class="tools-grid">
+      <div class="tool-chip reveal"><div class="tool-icon" style="background:#EFF6FF"><svg viewBox="0 0 20 20" style="stroke:#1D4ED8"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 10h6M10 7v6"/></svg></div><div class="tool-name">5S</div><div class="tool-type">Méthode qualité</div></div>
+      <div class="tool-chip reveal d1"><div class="tool-icon" style="background:#F0FDF4"><svg viewBox="0 0 20 20" style="stroke:#15803D"><path d="M10 4v12M4 10h12"/></svg></div><div class="tool-name">PDCA</div><div class="tool-type">Amélioration</div></div>
+      <div class="tool-chip reveal d2"><div class="tool-icon" style="background:#FFF7ED"><svg viewBox="0 0 20 20" style="stroke:#C2410C"><path d="M10 4l6 12H4l6-12z"/><path d="M10 10v4"/></svg></div><div class="tool-name">Ishikawa</div><div class="tool-type">Causes racines</div></div>
+      <div class="tool-chip reveal d3"><div class="tool-icon" style="background:#FAF5FF"><svg viewBox="0 0 20 20" style="stroke:#7E22CE"><path d="M4 16V8l6-4 6 4v8"/><rect x="7" y="11" width="6" height="5"/></svg></div><div class="tool-name">VSM</div><div class="tool-type">Flux de valeur</div></div>
+      <div class="tool-chip reveal"><div class="tool-icon" style="background:#FFFBEB"><svg viewBox="0 0 20 20" style="stroke:#B45309"><circle cx="10" cy="10" r="6"/><path d="M10 6v4l3 3"/></svg></div><div class="tool-name">ISO 9001</div><div class="tool-type">Qualité</div></div>
+      <div class="tool-chip reveal d1"><div class="tool-icon" style="background:#F0FDFA"><svg viewBox="0 0 20 20" style="stroke:#0F766E"><path d="M6 4h8M4 8h12M6 12h8M4 16h12"/></svg></div><div class="tool-name">SolidWorks</div><div class="tool-type">CAO 3D</div></div>
+      <div class="tool-chip reveal d2"><div class="tool-icon" style="background:#FFF7ED"><svg viewBox="0 0 20 20" style="stroke:#C2410C"><path d="M4 4h12v12H4zM8 4v12M4 8h12M4 12h12"/></svg></div><div class="tool-name">Excel / VBA</div><div class="tool-type">SPC</div></div>
+      <div class="tool-chip reveal d3"><div class="tool-icon" style="background:#EFF6FF"><svg viewBox="0 0 20 20" style="stroke:#1D4ED8"><circle cx="10" cy="10" r="6"/><path d="M4 10h12M10 4c-2 2-3 4-3 6s1 4 3 6"/></svg></div><div class="tool-name">ISO 14001</div><div class="tool-type">Environnement</div></div>
+      <div class="tool-chip reveal"><div class="tool-icon" style="background:#F0FDF4"><svg viewBox="0 0 20 20" style="stroke:#15803D"><path d="M5 15l5-10 5 10M7.5 11h5"/></svg></div><div class="tool-name">AMDEC</div><div class="tool-type">Risques</div></div>
+      <div class="tool-chip reveal d1"><div class="tool-icon" style="background:#FAF5FF"><svg viewBox="0 0 20 20" style="stroke:#7E22CE"><path d="M4 16l4-8 4 4 2-3 2 7"/></svg></div><div class="tool-name">SPC</div><div class="tool-type">Stats qualité</div></div>
+      <div class="tool-chip reveal d2"><div class="tool-icon" style="background:#FFFBEB"><svg viewBox="0 0 20 20" style="stroke:#B45309"><path d="M4 8h12M4 12h12M8 4v12"/></svg></div><div class="tool-name">8D / QRQC</div><div class="tool-type">Résolution</div></div>
+      <div class="tool-chip reveal d3"><div class="tool-icon" style="background:#F0FDFA"><svg viewBox="0 0 20 20" style="stroke:#0F766E"><path d="M6 6h8M6 10h8M6 14h5"/><rect x="3" y="3" width="14" height="14" rx="2"/></svg></div><div class="tool-name">DUERP</div><div class="tool-type">Éval. risques</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<section id="projets" class="section section-alt">
+  <div class="container">
+    <div class="sec-header reveal"><div><div class="sey">Réalisations</div><h2 class="stitle">Projets & travaux</h2></div><a href="#contact" class="see-all">Discutons →</a></div>
+    <div class="filters reveal">
+      <button class="filter-btn active" data-filter="all">Tous</button>
+      <button class="filter-btn" data-filter="qualite">Qualité</button>
+      <button class="filter-btn" data-filter="logistique">Logistique</button>
+      <button class="filter-btn" data-filter="qse">QSE</button>
+      <button class="filter-btn" data-filter="organisation">Organisation</button>
+      <button class="filter-btn" data-filter="amelioration">Amélioration</button>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal" data-category="qualite" onclick="openModal('p1')"><div class="project-cover cover-q"><span class="project-num num-q">01 · Qualité</span><span class="project-badge badge-q">Alternance · 2024</span></div><div class="project-body"><div class="project-title">Déploiement 5S en atelier de production</div><div class="project-desc">Diagnostic initial, standardisation des postes, formation des opérateurs et audits.</div><div class="project-footer"><span class="project-meta">Technicien qualité</span><span class="project-arrow">↗</span></div></div></div>
+      <div class="project-card reveal d1" data-category="qse" onclick="openModal('p2')"><div class="project-cover cover-s"><span class="project-num num-s">02 · QSE</span><span class="project-badge badge-s">BUT QLIO · 2024</span></div><div class="project-body"><div class="project-title">SAé 3.63 — Démarche QSE en entreprise</div><div class="project-desc">Évaluation des risques, aspects environnementaux et plan de conformité.</div><div class="project-footer"><span class="project-meta">SAé BUT QLIO</span><span class="project-arrow">↗</span></div></div></div>
+      <div class="project-card reveal d2" data-category="logistique" onclick="openModal('p3')"><div class="project-cover cover-l"><span class="project-num num-l">03 · Logistique</span><span class="project-badge badge-l">BUT QLIO · 2023</span></div><div class="project-body"><div class="project-title">Optimisation des flux logistiques internes</div><div class="project-desc">Cartographie VSM, analyse des goulots et plan d'action supply chain.</div><div class="project-footer"><span class="project-meta">Projet académique</span><span class="project-arrow">↗</span></div></div></div>
+      <div class="project-card reveal" data-category="organisation" onclick="openModal('p4')"><div class="project-cover cover-o"><span class="project-num num-o">04 · Organisation</span><span class="project-badge badge-o">Alternance · 2023</span></div><div class="project-body"><div class="project-title">Gestion documentaire & système qualité</div><div class="project-desc">Création de procédures, modes opératoires et structuration de l'archivage.</div><div class="project-footer"><span class="project-meta">Technicien qualité</span><span class="project-arrow">↗</span></div></div></div>
+      <div class="project-card reveal d1" data-category="qualite" onclick="openModal('p5')"><div class="project-cover cover-m"><span class="project-num num-m">05 · Qualité</span><span class="project-badge badge-m">Alternance · 2023</span></div><div class="project-body"><div class="project-title">Suivi de la conformité en production</div><div class="project-desc">Contrôle dimensionnel, rapports de NC et actions correctives.</div><div class="project-footer"><span class="project-meta">Technicien qualité</span><span class="project-arrow">↗</span></div></div></div>
+      <div class="project-card reveal d2" data-category="amelioration" onclick="openModal('p6')"><div class="project-cover cover-g"><span class="project-num num-g">06 · Amélioration</span><span class="project-badge badge-g">BUT QLIO · 2023</span></div><div class="project-body"><div class="project-title">Plan d'amélioration continue — SAé QLIO</div><div class="project-desc">Cycle PDCA, Ishikawa et analyse des causes racines.</div><div class="project-footer"><span class="project-meta">SAé BUT QLIO</span><span class="project-arrow">↗</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETENCES -->
+<section id="competences" class="section">
+  <div class="container">
+    <div class="sec-header reveal"><div><div class="sey">Expertise</div><h2 class="stitle">Domaines de compétences</h2></div></div>
+    <div class="comp-grid">
+      <div class="comp-card reveal"><div class="comp-icon"><svg viewBox="0 0 18 18"><path d="M9 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/></svg></div><div class="comp-title">Qualité</div><div class="comp-items"><span class="comp-item">Démarche 5S</span><span class="comp-item">Contrôle conformité</span><span class="comp-item">Audits internes</span><span class="comp-item">Rapports de NC</span><span class="comp-item">Documentation qualité</span></div></div>
+      <div class="comp-card reveal d1"><div class="comp-icon"><svg viewBox="0 0 18 18"><path d="M2 9h14M9 2l7 7-7 7"/></svg></div><div class="comp-title">Logistique</div><div class="comp-items"><span class="comp-item">Cartographie VSM</span><span class="comp-item">Gestion des flux</span><span class="comp-item">Supply chain</span><span class="comp-item">Optimisation processus</span><span class="comp-item">Réduction délais</span></div></div>
+      <div class="comp-card reveal d2"><div class="comp-icon"><svg viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 3"/></svg></div><div class="comp-title">Organisation</div><div class="comp-items"><span class="comp-item">Cycle PDCA</span><span class="comp-item">Planification</span><span class="comp-item">Gestion de projet</span><span class="comp-item">Ishikawa</span><span class="comp-item">Causes racines</span></div></div>
+      <div class="comp-card reveal d3"><div class="comp-icon"><svg viewBox="0 0 18 18"><path d="M9 2v4M9 12v4M2 9h4M12 9h4"/></svg></div><div class="comp-title">QSE & Outils</div><div class="comp-items"><span class="comp-item">Évaluation des risques</span><span class="comp-item">Aspects environnementaux</span><span class="comp-item">SolidWorks</span><span class="comp-item">Lecture de plans</span><span class="comp-item">ISO 9001/14001</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CV -->
+<section id="cv">
+  <div class="cv-bg"></div>
+  <div class="cv-grid">
+    <div class="reveal">
+      <div class="sey" style="color:var(--accent)">Formation</div>
+      <h2 class="cv-stitle">Parcours académique</h2>
+      <p class="cv-sub">Une formation en 3 ans construite sur la rigueur et la pratique.</p>
+      <div class="timeline-item"><div class="tl-dot"><div class="tl-dot-inner"></div></div><div><div class="tl-date">2022 — 2025</div><div class="tl-title">BUT QLIO — Qualité, Logistique & Organisation</div><div class="tl-sub">UPHF Valenciennes · Amélioration continue & management industriel</div></div></div>
+      <div class="timeline-item"><div class="tl-dot"><div class="tl-dot-inner"></div></div><div><div class="tl-date">2020 — 2022</div><div class="tl-title">BTS CPRP — Conception de Produits Réalisés par Plasturgie</div><div class="tl-sub">Mécanique, lecture de plans, SolidWorks · Outils 3D</div></div></div>
+      <a href="#contact" class="cv-dl"><svg viewBox="0 0 16 16"><path d="M8 2v8M4 6l4 4 4-4M2 13h12"/></svg>Télécharger mon CV</a>
+    </div>
+    <div class="reveal d1">
+      <div class="sey" style="color:var(--accent)">Expérience</div>
+      <h2 class="cv-stitle">Parcours professionnel</h2>
+      <p class="cv-sub">2 ans d'alternance terrain en qualité industrielle.</p>
+      <div class="timeline-item"><div class="tl-dot"><div class="tl-dot-inner"></div></div><div><div class="tl-date">2022 — 2025</div><div class="tl-title">Technicien Qualité — Alternance</div><div class="tl-sub">Conformité · 5S · Amélioration continue · Gestion documentaire</div></div></div>
+      <div class="timeline-item"><div class="tl-dot"><div class="tl-dot-inner"></div></div><div><div class="tl-date">Objectif 2025</div><div class="tl-title">Master Qualité ou Management Industriel</div><div class="tl-sub">Poste à responsabilité · Performance industrielle · Hauts-de-France</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band reveal">
+  <div><h2>Vous cherchez un profil QLIO rigoureux ?</h2><p>Disponible pour une alternance en Master Qualité ou Management Industriel. Hauts-de-France.</p></div>
+  <div class="cta-btns"><a href="#cv" class="btn-navy-o">Voir le CV</a><a href="#contact" class="btn-navy">Prendre contact</a></div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="sey">Contact</div>
+      <h2 class="contact-title">Discutons de votre projet</h2>
+      <p class="contact-sub">Disponible pour une alternance en Master Qualité, Management Industriel ou tout projet en amélioration continue.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="ci-icon"><svg viewBox="0 0 15 15"><path d="M2 3h11l-5.5 5L2 3zM2 3v9h11V3"/></svg></div>
+          <div><div class="ci-label">Email</div><div class="ci-value">adrien.mathias@email.fr</div></div>
+          <button class="copy-btn" id="copy-email-btn" onclick="copyEmail()">Copier</button>
+        </div>
+        <a href="https://linkedin.com" target="_blank" class="contact-item">
+          <div class="ci-icon"><svg viewBox="0 0 15 15"><rect x="2" y="2" width="11" height="11" rx="2"/><path d="M5 7v4M5 5v.5M8 11V8.5c0-1 .5-1.5 1.5-1.5s1.5.5 1.5 1.5V11"/></svg></div>
+          <div><div class="ci-label">LinkedIn</div><div class="ci-value">linkedin.com/in/adrienmathias</div></div>
+        </a>
+        <a href="#cv" class="contact-item">
+          <div class="ci-icon"><svg viewBox="0 0 15 15"><path d="M4 2h7l2 2v9H2V2zM8 2v4h4"/><path d="M5 9h5M5 11h3"/></svg></div>
+          <div><div class="ci-label">CV</div><div class="ci-value">Télécharger mon CV PDF</div></div>
+        </a>
+      </div>
+    </div>
+    <div class="reveal d1">
+      <form class="contact-form" onsubmit="handleForm(event)">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Prénom</label><input type="text" class="form-input" placeholder="Jean" required></div>
+          <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" placeholder="Dupont" required></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="jean@entreprise.fr" required></div>
+        <div class="form-group"><label class="form-label">Objet</label><input type="text" class="form-input" placeholder="Proposition d'alternance Master Qualité"></div>
+        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Bonjour Adrien..." required></textarea></div>
+        <button type="submit" class="form-submit" id="submit-btn">Envoyer le message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">© 2025 — Adrien Mathias · Portfolio QLIO · UPHF</div>
+  <div class="footer-links"><a href="#accueil">Accueil</a><a href="#projets">Projets</a><a href="#cv">Parcours</a><a href="#contact">Contact</a></div>
+</footer>
+
+<script>
+const projects={
+  p1:{num:'01 · Qualité',numClass:'num-q',coverClass:'cover-q',badgeClass:'badge-q',badge:'Alternance · 2024',title:'Déploiement 5S en atelier de production',meta:'Technicien qualité · 2024',context:'Pilotage du déploiement de la méthode 5S dans un atelier de production. Objectif : réduire les pertes de temps, sécuriser les postes et standardiser les pratiques.',tools:['5S','Audit terrain','Fiches de standard','Formation opérateurs','Plan d\'action'],results:[{icon:'M5 15l5-10 5 10M7.5 11h5',text:'<strong>3 zones auditées</strong> — Débit, Outillage et Montage documentés'},{icon:'M2 7h10M7 2l5 5-5 5',text:'<strong>Réduction du temps de recherche</strong> d\'outillage estimée à 20%'},{icon:'M7 1v6M4 10h6',text:'<strong>8 opérateurs formés</strong> aux standards 5S'}]},
+  p2:{num:'02 · QSE',numClass:'num-s',coverClass:'cover-s',badgeClass:'badge-s',badge:'BUT QLIO · 2024',title:'SAé 3.63 — Démarche QSE en entreprise',meta:'SAé BUT QLIO · 2024',context:'Démarche QSE complète : identification des risques professionnels, aspects environnementaux significatifs et plan d\'action conforme aux exigences réglementaires.',tools:['DUERP','ISO 14001','Réglementation travail','Plan d\'action','Rapport QSE'],results:[{icon:'M5 15l5-10 5 10M7.5 11h5',text:'<strong>DUERP complet</strong> avec hiérarchisation des risques'},{icon:'M2 7h10M7 2l5 5-5 5',text:'<strong>12 aspects environnementaux</strong> dont 4 significatifs'},{icon:'M7 1v6M4 10h6',text:'<strong>Plan d\'action QSE</strong> sur 6 mois avec indicateurs'}]},
+  p3:{num:'03 · Logistique',numClass:'num-l',coverClass:'cover-l',badgeClass:'badge-l',badge:'BUT QLIO · 2023',title:'Optimisation des flux logistiques internes',meta:'Projet BUT QLIO · 2023',context:'Analyse des flux de matières et d\'informations. Identification des goulots d\'étranglement et propositions pour fluidifier la supply chain interne.',tools:['VSM','Diagramme spaghetti','Indicateurs TRS','Takt time','Plan d\'action'],results:[{icon:'M5 15l5-10 5 10M7.5 11h5',text:'<strong>Cartographie VSM</strong> état actuel/futur avec 3 goulots identifiés'},{icon:'M2 7h10M7 2l5 5-5 5',text:'<strong>Réduction théorique du lead time</strong> de 18%'},{icon:'M7 1v6M4 10h6',text:'<strong>5 recommandations</strong> priorisées par gain/effort'}]},
+  p4:{num:'04 · Organisation',numClass:'num-o',coverClass:'cover-o',badgeClass:'badge-o',badge:'Alternance · 2023',title:'Gestion documentaire & système qualité',meta:'Technicien qualité · 2023',context:'Restructuration du système documentaire qualité : création de procédures, révision des instructions et mise en place d\'un plan de classement cohérent.',tools:['Procédures','Modes opératoires','Instructions de travail','ISO 9001','Revue documentaire'],results:[{icon:'M5 15l5-10 5 10M7.5 11h5',text:'<strong>15 documents</strong> créés ou révisés'},{icon:'M2 7h10M7 2l5 5-5 5',text:'<strong>Plan de classement numérique</strong> structuré'},{icon:'M7 1v6M4 10h6',text:'<strong>Conformité ISO 9001</strong> renforcée sur la maîtrise documentaire'}]},
+  p5:{num:'05 · Qualité',numClass:'num-m',coverClass:'cover-m',badgeClass:'badge-m',badge:'Alternance · 2023',title:'Suivi de la conformité en production',meta:'Technicien qualité · 2023',context:'Dispositif de contrôle dimensionnel en cours de production. Rapports de NC, analyse des causes et actions correctives pour réduire le taux de rebut.',tools:['Contrôle dimensionnel','Rapport NC','8D','Pied à coulisse','SPC','Actions correctives'],results:[{icon:'M5 15l5-10 5 10M7.5 11h5',text:'<strong>Réduction du taux de rebut</strong> par actions correctives ciblées'},{icon:'M2 7h10M7 2l5 5-5 5',text:'<strong>Plan de contrôle mis à jour</strong> selon les criticités'},{icon:'M7 1v6M4 10h6',text:'<strong>Traçabilité complète</strong> des NC avec suivi d\'efficacité'}]},
+  p6:{num:'06 · Amélioration',numClass:'num-g',coverClass:'cover-g',badgeClass:'badge-g',badge:'BUT QLIO · 2023',title:'Plan d\'amélioration continue — SAé QLIO',meta:'SAé BUT QLIO · 2023',context:'Application du cycle PDCA sur une problématique réelle. Analyse des causes racines pour structurer un plan d\'amélioration mesurable et actionnable.',tools:['PDCA','Ishikawa','5 Pourquoi','Vote pondéré','Plan SMART','Indicateurs'],results:[{icon:'M5 15l5-10 5 10M7.5 11h5',text:'<strong>Analyse PDCA complète</strong> avec causes racines hiérarchisées'},{icon:'M2 7h10M7 2l5 5-5 5',text:'<strong>6 actions SMART</strong> planifiées sur 3 mois'},{icon:'M7 1v6M4 10h6',text:'<strong>Indicateurs avant/après</strong> pour mesurer l\'efficacité'}]}
+};
+
+function openModal(id){
+  const p=projects[id];if(!p)return;
+  document.getElementById('modal-cover').className='modal-cover '+p.coverClass;
+  const n=document.getElementById('modal-num');n.className='project-num '+p.numClass;n.textContent=p.num;
+  const b=document.getElementById('modal-badge');b.className='project-badge '+p.badgeClass;b.textContent=p.badge;
+  document.getElementById('modal-title').textContent=p.title;
+  document.getElementById('modal-meta').textContent=p.meta;
+  document.getElementById('modal-context').textContent=p.context;
+  document.getElementById('modal-tools').innerHTML=p.tools.map(t=>`<span class="modal-tag">${t}</span>`).join('');
+  document.getElementById('modal-results').innerHTML=p.results.map(r=>`<div class="modal-result"><div class="modal-result-icon"><svg viewBox="0 0 13 13" width="12" height="12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="${r.icon}"/></svg></div><div class="modal-result-text">${r.text}</div></div>`).join('');
+  document.getElementById('modal-backdrop').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){if(e.target===document.getElementById('modal-backdrop'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modal-backdrop').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
+
+/* CURSEUR */
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let cx=0,cy=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;cur.style.left=cx+'px';cur.style.top=cy+'px';});
+(function animRing(){rx+=(cx-rx)*.12;ry+=(cy-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
+document.querySelectorAll('a,button,.project-card,.tool-chip').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='16px';cur.style.height='16px';ring.style.width='44px';ring.style.height='44px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='9px';cur.style.height='9px';ring.style.width='30px';ring.style.height='30px';});
+});
+
+/* TYPING */
+const words=['amélioration continue','démarche 5S','management QSE','logistique industrielle','contrôle qualité'];
+let wi=0,ci=0,del=false;const tw=document.getElementById('typing-word');
+function type(){if(!tw)return;const w=words[wi];if(!del){tw.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(type,1600);return;}}else{tw.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%words.length;setTimeout(type,350);return;}}setTimeout(type,del?55:85);}
+setTimeout(type,1000);
+
+/* PROGRESS + BТТ */
+const bar=document.getElementById('progress-bar'),btt=document.getElementById('btt');
+window.addEventListener('scroll',()=>{
+  const tot=document.documentElement.scrollHeight-window.innerHeight;
+  bar.style.width=(window.scrollY/tot*100)+'%';
+  btt.classList.toggle('visible',window.scrollY>300);
+});
+
+/* THEME */
+const tBtn=document.getElementById('theme-btn'),tIcon=document.getElementById('theme-icon');
+const moon='<path d="M12 3a6 6 0 0 0 0 10 7 7 0 1 1 0-10z"/>',sun='<path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"/><circle cx="8" cy="8" r="3"/>';
+let dark=localStorage.getItem('theme')==='dark';
+if(dark){document.documentElement.setAttribute('data-theme','dark');tIcon.innerHTML=moon;}
+tBtn.addEventListener('click',()=>{dark=!dark;document.documentElement.setAttribute('data-theme',dark?'dark':'');tIcon.innerHTML=dark?moon:sun;localStorage.setItem('theme',dark?'dark':'light');});
+
+/* REVEAL */
+const revObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+
+/* SKILL BARS */
+const skillObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.style.width=x.target.dataset.width+'%';skillObs.unobserve(x.target);}});},{threshold:.5});
+document.querySelectorAll('.skill-fill[data-width]').forEach(el=>skillObs.observe(el));
+
+/* COUNTERS */
+const cntObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){const t=+x.target.dataset.target;let c=0;const step=t/25;const tm=setInterval(()=>{c=Math.min(c+step,t);x.target.textContent=Math.round(c);if(c>=t)clearInterval(tm);},45);cntObs.unobserve(x.target);}});},{threshold:.5});
+document.querySelectorAll('.counter').forEach(el=>cntObs.observe(el));
+
+/* FILTERS */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+    const f=btn.dataset.filter;document.querySelectorAll('.project-card').forEach(c=>{c.classList.toggle('hidden',f!=='all'&&c.dataset.category!==f);});
+  });
+});
+
+/* DOT NAV */
+const dotObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.dot-nav-item').forEach(d=>d.classList.remove('active'));const a=document.querySelector(`.dot-nav-item[data-section="${x.target.id}"]`);if(a)a.classList.add('active');}});},{threshold:.35});
+['accueil','apropos','softskills','outils','projets','competences','cv','contact'].forEach(id=>{const s=document.getElementById(id);if(s)dotObs.observe(s);});
+
+/* NAV ACTIVE */
+const navObs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.nav-links a').forEach(l=>l.classList.remove('active'));const t=document.querySelector(`.nav-links a[href="#${x.target.id}"]`);if(t)t.classList.add('active');}});},{threshold:.4});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
+
+/* COPY EMAIL */
+function copyEmail(){navigator.clipboard.writeText('adrien.mathias@email.fr').then(()=>{const b=document.getElementById('copy-email-btn');b.textContent='Copié !';b.classList.add('copied');setTimeout(()=>{b.textContent='Copier';b.classList.remove('copied');},2500);});}
+
+/* FORM */
+function handleForm(e){e.preventDefault();const b=document.getElementById('submit-btn');b.textContent='✓ Envoyé !';b.style.background='#22C55E';setTimeout(()=>{b.textContent='Envoyer le message';b.style.background='';e.target.reset();},3000);}
+</script>
+</body>
+</html>
